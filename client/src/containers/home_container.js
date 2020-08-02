@@ -33,7 +33,7 @@ class HomeContainer extends Component {
             if (this.props.portfolio.list.length === number) {
                 this.setState({ hideLoadMore: true })
             }
-        }, 100);
+        }, 300);
     }
 
     LoadMoreYesorNot = () => (

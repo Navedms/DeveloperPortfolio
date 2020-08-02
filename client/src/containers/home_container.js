@@ -6,6 +6,10 @@ import WorkItem from '../widgetsUI/work_item';
 
 class HomeContainer extends Component {
 
+    state = {
+        hideLoadMore: false
+    }
+
 
     componentWillMount() {
         this.props.dispatch(getWork(4, 0, 'desc'))
@@ -16,24 +20,41 @@ class HomeContainer extends Component {
             works.list.map(item => (
                 <WorkItem {...item} key={item._id} />
             ))
-
             : null
     )
     loadmore = () => {
         let count = this.props.portfolio.list.length;
         this.props.dispatch(getWork(3, count, 'desc', this.props.portfolio.list))
+        this.hideLoadMore(count)
     }
 
-    render() {
+    hideLoadMore = (number) => {
+        setTimeout(() => {
+            if (this.props.portfolio.list.length === number) {
+                this.setState({ hideLoadMore: true })
+            }
+        }, 100);
+    }
 
+    LoadMoreYesorNot = () => (
+        !this.state.hideLoadMore ?
+            <div className="loadmore"
+                onClick={this.loadmore}
+            >
+                Load More
+                </div>
+            :
+            <div className="loadmore-2">
+                There are no more posts to show right now...
+                </div>
+    )
+
+    render() {
         return (
             <div>
                 {this.renderItems(this.props.portfolio)}
-                <div className="loadmore"
-                    onClick={this.loadmore}
-                >
-                    Load More
-                </div>
+                {this.LoadMoreYesorNot()}
+
             </div>
         );
     }
